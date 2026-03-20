@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events · Mar 19–24 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Trajan+Pro+3:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&family=Abril+Fatface&family=DM+Sans:wght@300;400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=Raleway:wght@100;200;400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  transition: background 0.4s, color 0.4s;
+}
+
+/* ============================================================
+   THEME SELECTOR BAR
+   ============================================================ */
+#theme-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+#theme-bar span {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-right: 4px;
+  opacity: 0.6;
+}
+.theme-btn {
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+.theme-btn.active { opacity: 1; transform: scale(1.05); }
+.theme-btn:not(.active) { opacity: 0.5; }
+
+/* Search bar */
+#search-wrap {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#search {
+  border: none;
+  outline: none;
+  padding: 5px 12px;
+  font-size: 12px;
+  border-radius: 2px;
+  width: 200px;
+  background: transparent;
+  border-bottom: 1px solid currentColor;
+}
+#count {
+  font-size: 11px;
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+/* Day filter tabs */
+#day-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 8px 20px;
+  flex-wrap: wrap;
+}
+.day-tab {
+  cursor: pointer;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 1px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+#main {
+  padding: 0 20px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.day-group { margin-bottom: 48px; }
+.day-heading {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 16px 0 12px;
+  border-bottom: 1px solid;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+
+/* ============================================================
+   EVENT CARD BASE
+   ============================================================ */
+.event-card {
+  padding: 18px 20px;
+  border-radius: 2px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.event-card:hover { transform: translateY(-2px); }
+.event-time {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  opacity: 0.55;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.event-title {
+  font-size: 16px;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+.event-venue {
+  font-size: 12px;
+  opacity: 0.65;
+  margin-bottom: 10px;
+}
+.event-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 1px;
+  letter-spacing: 0.05em;
+}
+.event-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 11px;
+  margin-top: 8px;
+  gap: 8px;
+}
+.event-price { opacity: 0.7; }
+.event-link {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  text-decoration: none;
+  border-bottom: 1px dashed;
+  cursor: pointer;
+  padding-bottom: 1px;
+}
+.event-link:hover { opacity: 1; }
+.event-org { font-size: 10px; opacity: 0.45; }
+.hidden { display: none !important; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+header {
+  padding: 48px 20px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.header-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 10px;
+}
+.header-title {
+  line-height: 0.9;
+  margin-bottom: 16px;
+}
+.header-sub {
+  font-size: 13px;
+  opacity: 0.5;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   THEME 1 — FRACTURE / KINTSUGI
+   ============================================================ */
+body.t-fracture {
+  background: #0e0c0a;
+  color: #c8bfb0;
+  font-family: 'DM Sans', sans-serif;
+}
+body.t-fracture::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+body.t-fracture #theme-bar {
+  background: rgba(14,12,10,0.9);
+  border-bottom: 1px solid rgba(180,120,60,0.15);
+}
+body.t-fracture .theme-btn { font-family: 'DM Sans', sans-serif; }
+body.t-fracture .theme-btn.active { background: #7a4a20; color: #e8d5b0; }
+body.t-fracture .theme-btn:not(.active) { background: rgba(255,255,255,0.04); color: #c8bfb0; }
+body.t-fracture #search { color: #c8bfb0; border-color: rgba(200,180,140,0.2); }
+body.t-fracture #search::placeholder { color: rgba(200,180,140,0.35); }
+body.t-fracture #day-tabs { border-bottom: 1px solid rgba(180,120,60,0.1); }
+body.t-fracture .day-tab { color: #9a8870; border-color: transparent; }
+body.t-fracture .day-tab:hover { color: #c8a870; border-color: rgba(180,120,60,0.3); }
+body.t-fracture .day-tab.active { color: #d4a060; border-color: rgba(180,120,60,0.5); background: rgba(120,70,20,0.2); }
+body.t-fracture .header-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(40px,8vw,88px); color: #d4c4a8; }
+body.t-fracture .header-eyebrow, body.t-fracture .header-sub { font-family: 'DM Sans', sans-serif; }
+body.t-fracture .day-heading { border-color: rgba(180,120,60,0.2); color: #9a7050; }
+body.t-fracture .event-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(180,120,60,0.12);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
+}
+body.t-fracture .event-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,140,60,0.3), transparent);
+}
+body.t-fracture .event-card:hover {
+  border-color: rgba(180,120,60,0.3);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.2);
+}
+body.t-fracture .event-title { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 17px; color: #d4c4a4; }
+body.t-fracture .event-venue { font-size: 11px; letter-spacing: 0.05em; }
+body.t-fracture .tag { background: rgba(120,70,20,0.25); color: #b08040; border: 1px solid rgba(180,120,60,0.2); }
+body.t-fracture .event-link { color: #b08040; border-color: rgba(180,120,60,0.3); }
+
+/* ============================================================
+   THEME 2 — TRANSMISSION / DEAD CHANNEL
+   ============================================================ */
+body.t-channel {
+  background: #050806;
+  color: #88cc88;
+  font-family: 'Share Tech Mono', monospace;
+}
+body.t-channel::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+  pointer-events: none;
+  z-index: 1;
+}
+body.t-channel #theme-bar {
+  background: rgba(5,8,6,0.95);
+  border-bottom: 1px solid rgba(100,200,100,0.12);
+  z-index: 102;
+}
+body.t-channel .theme-btn { font-family: 'Share Tech Mono', monospace; }
+body.t-channel .theme-btn.active { background: #004400; color: #00ff44; border: 1px solid #00aa33; }
+body.t-channel .theme-btn:not(.active) { background: rgba(0,40,0,0.5); color: #448844; border: 1px solid rgba(100,200,100,0.15); }
+body.t-channel #search { color: #88cc88; border-color: rgba(100,200,100,0.2); caret-color: #00ff44; }
+body.t-channel #search::placeholder { color: rgba(136,204,136,0.3); }
+body.t-channel #day-tabs { border-bottom: 1px solid rgba(100,200,100,0.08); }
+body.t-channel .day-tab { color: #446644; border-color: transparent; }
+body.t-channel .day-tab:hover { color: #88cc88; border-color: rgba(100,200,100,0.2); }
+body.t-channel .day-tab.active { color: #00ff44; border-color: rgba(0,255,68,0.4); background: rgba(0,60,0,0.4); }
+body.t-channel .header-title { font-family: 'Space Mono', monospace; font-size: clamp(24px,5vw,56px); color: #00ff44; text-shadow: 0 0 20px rgba(0,255,68,0.4); letter-spacing: -0.02em; }
+body.t-channel .header-eyebrow { font-family: 'Share Tech Mono', monospace; color: #446644; }
+body.t-channel .header-sub { font-family: 'Share Tech Mono', monospace; }
+body.t-channel .day-heading { border-color: rgba(100,200,100,0.1); color: #446644; }
+body.t-channel .day-heading::before { content: '> '; color: #00ff44; }
+body.t-channel .event-card {
+  background: rgba(0,20,0,0.6);
+  border: 1px solid rgba(100,200,100,0.1);
+  border-left: 2px solid rgba(0,255,68,0.15);
+}
+body.t-channel .event-card:hover {
+  border-color: rgba(0,255,68,0.3);
+  border-left-color: #00ff44;
+  box-shadow: 0 0 20px rgba(0,255,68,0.05), -4px 0 16px rgba(0,255,68,0.08);
+}
+body.t-channel .event-title { font-size: 14px; color: #aaddaa; line-height: 1.4; }
+body.t-channel .event-time::before { content: '['; }
+body.t-channel .event-time::after { content: ']'; }
+body.t-channel .tag { background: rgba(0,40,0,0.8); color: #557755; border: 1px solid rgba(100,200,100,0.15); font-size: 9px; }
+body.t-channel .event-link { color: #00cc44; border-color: rgba(0,200,68,0.3); }
+body.t-channel .event-card::before {
+  content: attr(data-idx);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 9px;
+  color: rgba(100,200,100,0.15);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* ============================================================
+   THEME 3 — SPECIMEN / ARCHIVE
+   ============================================================ */
+body.t-archive {
+  background: #f4efe6;
+  color: #1a1410;
+  font-family: 'IM Fell English', serif;
+}
+body.t-archive #theme-bar {
+  background: rgba(244,239,230,0.95);
+  border-bottom: 1px solid rgba(80,50,20,0.15);
+}
+body.t-archive .theme-btn { font-family: 'Cormorant Garamond', serif; font-size: 12px; }
+body.t-archive .theme-btn.active { background: #2a1c08; color: #f4efe6; }
+body.t-archive .theme-btn:not(.active) { background: rgba(80,50,20,0.08); color: #5a3e20; }
+body.t-archive #search { color: #1a1410; border-color: rgba(80,50,20,0.25); }
+body.t-archive #search::placeholder { color: rgba(80,50,20,0.3); }
+body.t-archive #day-tabs { border-bottom: 1px solid rgba(80,50,20,0.12); }
+body.t-archive .day-tab { color: #8a6a40; font-family: 'Cormorant Garamond', serif; letter-spacing: 0.15em; border-color: transparent; }
+body.t-archive .day-tab:hover { color: #3a2010; border-color: rgba(80,50,20,0.3); }
+body.t-archive .day-tab.active { color: #1a1410; border-color: rgba(80,50,20,0.5); background: rgba(80,50,20,0.07); }
+body.t-archive .header-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-style: italic; font-size: clamp(36px,7vw,80px); color: #1a1410; border-bottom: 1px solid rgba(80,50,20,0.2); padding-bottom: 16px; }
+body.t-archive .header-eyebrow { font-family: 'Cormorant Garamond', serif; text-transform: uppercase; letter-spacing: 0.4em; font-size: 10px; }
+body.t-archive .header-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; opacity: 0.6; }
+body.t-archive .day-heading { font-family: 'Cormorant Garamond', serif; font-weight: 600; letter-spacing: 0.25em; border-color: rgba(80,50,20,0.2); color: #6a4a20; font-size: 10px; }
+body.t-archive .event-card {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(80,50,20,0.12);
+  border-top: 2px solid rgba(80,50,20,0.25);
+}
+body.t-archive .event-card:hover {
+  background: rgba(255,255,255,0.8);
+  box-shadow: 2px 4px 12px rgba(80,50,20,0.1);
+}
+body.t-archive .event-title { font-family: 'IM Fell English', serif; font-size: 15px; color: #1a1410; }
+body.t-archive .event-time { font-family: 'Cormorant Garamond', serif; font-style: italic; letter-spacing: 0.05em; }
+body.t-archive .event-venue { font-family: 'Cormorant Garamond', serif; }
+body.t-archive .tag { background: rgba(80,50,20,0.07); color: #6a4a20; border: 1px solid rgba(80,50,20,0.15); font-family: 'Cormorant Garamond', serif; font-size: 10px; letter-spacing: 0.05em; }
+body.t-archive .event-link { color: #4a2800; border-color: rgba(80,50,20,0.3); font-family: 'Cormorant Garamond', serif; font-style: italic; }
+body.t-archive .event-price { font-family: 'Cormorant Garamond', serif; }
+body.t-archive .event-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 20px; right: 20px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(80,50,20,0.1), transparent);
+}
+
+/* ============================================================
+   THEME 4 — FEVER / BLOOM
+   ============================================================ */
+body.t-fever {
+  background: #0d0520;
+  color: #f0e8ff;
+  font-family: 'Raleway', sans-serif;
+}
+body.t-fever::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 20%, rgba(255,60,120,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 80%, rgba(80,200,255,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 50%, rgba(200,80,255,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+body.t-fever #theme-bar {
+  background: rgba(13,5,32,0.9);
+  border-bottom: 1px solid rgba(255,60,120,0.15);
+  z-index: 102;
+}
+body.t-fever .theme-btn { font-family: 'Raleway', sans-serif; font-weight: 700; }
+body.t-fever .theme-btn.active { background: linear-gradient(135deg, #ff3c78, #c040ff); color: #fff; }
+body.t-fever .theme-btn:not(.active) { background: rgba(255,60,120,0.08); color: rgba(240,232,255,0.5); border: 1px solid rgba(255,60,120,0.1); }
+body.t-fever #search { color: #f0e8ff; border-color: rgba(255,60,120,0.2); caret-color: #ff3c78; }
+body.t-fever #search::placeholder { color: rgba(240,232,255,0.25); }
+body.t-fever #day-tabs { border-bottom: 1px solid rgba(255,60,120,0.1); }
+body.t-fever .day-tab { color: rgba(240,232,255,0.35); border-color: transparent; font-weight: 700; }
+body.t-fever .day-tab:hover { color: #ff6090; border-color: rgba(255,60,120,0.3); }
+body.t-fever .day-tab.active { color: #ff3c78; border-color: rgba(255,60,120,0.5); background: rgba(255,60,120,0.08); }
+body.t-fever .header-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(50px,12vw,130px); background: linear-gradient(135deg, #ff3c78, #c040ff, #40c8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.02em; line-height: 1; }
+body.t-fever .header-eyebrow { letter-spacing: 0.3em; color: rgba(255,60,120,0.6); }
+body.t-fever .header-sub { color: rgba(240,232,255,0.4); }
+body.t-fever .day-heading { border-color: rgba(255,60,120,0.15); color: rgba(255,60,120,0.45); }
+body.t-fever .event-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,60,120,0.1);
+  position: relative;
+}
+body.t-fever .event-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,60,120,0.03), transparent 60%);
+  pointer-events: none;
+}
+body.t-fever .event-card:hover {
+  border-color: rgba(255,60,120,0.35);
+  box-shadow: 0 0 30px rgba(255,60,120,0.1), 0 0 60px rgba(192,64,255,0.05);
+}
+body.t-fever .event-title { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 15px; color: #f0e8ff; }
+body.t-fever .event-time { color: rgba(255,60,120,0.6); }
+body.t-fever .tag { background: rgba(255,60,120,0.1); color: #ff90aa; border: 1px solid rgba(255,60,120,0.2); }
+body.t-fever .event-link { color: #c040ff; border-color: rgba(192,64,255,0.3); }
+body.t-fever .event-price { color: rgba(64,200,255,0.7); }
+
+/* ============================================================
+   THEME 5 — NEON UNDERGROUND / RAVE CAVE
+   ============================================================ */
+body.t-rave {
+  background: #030305;
+  color: #e0d8f0;
+  font-family: 'DM Sans', sans-serif;
+}
+body.t-rave::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 60% 40% at 30% 70%, rgba(0,255,180,0.03) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 70% 30%, rgba(255,0,200,0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+body.t-rave #theme-bar {
+  background: rgba(3,3,5,0.95);
+  border-bottom: 1px solid rgba(0,255,180,0.1);
+  z-index: 102;
+}
+body.t-rave .theme-btn { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.12em; }
+body.t-rave .theme-btn.active { background: #00ffb4; color: #030305; }
+body.t-rave .theme-btn:not(.active) { background: rgba(0,255,180,0.05); color: rgba(224,216,240,0.4); border: 1px solid rgba(0,255,180,0.08); }
+body.t-rave #search { color: #e0d8f0; border-color: rgba(0,255,180,0.15); caret-color: #00ffb4; }
+body.t-rave #search::placeholder { color: rgba(224,216,240,0.2); }
+body.t-rave #day-tabs { border-bottom: 1px solid rgba(0,255,180,0.07); }
+body.t-rave .day-tab { color: rgba(224,216,240,0.25); border-color: transparent; font-weight: 700; letter-spacing: 0.15em; }
+body.t-rave .day-tab:hover { color: #00ffb4; border-color: rgba(0,255,180,0.25); }
+body.t-rave .day-tab.active { color: #00ffb4; border-color: rgba(0,255,180,0.4); background: rgba(0,255,180,0.05); box-shadow: 0 0 12px rgba(0,255,180,0.1); }
+body.t-rave .header-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(50px,12vw,120px); color: #00ffb4; text-shadow: 0 0 40px rgba(0,255,180,0.3), 0 0 80px rgba(0,255,180,0.1); letter-spacing: 0.05em; line-height: 1; }
+body.t-rave .header-eyebrow { color: rgba(0,255,180,0.4); letter-spacing: 0.4em; }
+body.t-rave .header-sub { color: rgba(224,216,240,0.3); }
+body.t-rave .day-heading { font-family: 'DM Sans', sans-serif; font-weight: 700; border-color: rgba(0,255,180,0.08); color: rgba(0,255,180,0.3); }
+body.t-rave .event-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(0,255,180,0.07);
+  border-bottom: 1px solid rgba(255,0,200,0.06);
+  position: relative;
+}
+body.t-rave .event-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,180,0.2), transparent);
+}
+body.t-rave .event-card:hover {
+  border-color: rgba(0,255,180,0.2);
+  box-shadow: 0 0 24px rgba(0,255,180,0.06), 0 0 48px rgba(255,0,200,0.03);
+  background: rgba(0,255,180,0.03);
+}
+body.t-rave .event-title { font-weight: 700; font-size: 15px; color: #fff; }
+body.t-rave .event-time { color: rgba(0,255,180,0.5); font-size: 10px; letter-spacing: 0.15em; }
+body.t-rave .event-venue { color: rgba(224,216,240,0.4); }
+body.t-rave .tag { background: rgba(0,255,180,0.06); color: rgba(0,255,180,0.6); border: 1px solid rgba(0,255,180,0.12); font-size: 9px; letter-spacing: 0.08em; }
+body.t-rave .event-link { color: #ff00cc; border-color: rgba(255,0,204,0.3); }
+body.t-rave .event-price { color: rgba(255,200,0,0.6); }
+body.t-rave .event-card .pulse-dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #00ffb4;
+  box-shadow: 0 0 6px #00ffb4;
+  animation: pulse 2s ease-in-out infinite;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* ============================================================
+   NO RESULTS
+   ============================================================ */
+#no-results {
+  padding: 60px 20px;
+  text-align: center;
+  opacity: 0.35;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  display: none;
+}
+</style>
+</head>
+<body class="t-fracture">
+
+<!-- THEME BAR -->
+<div id="theme-bar">
+  <span>Theme</span>
+  <button class="theme-btn active" onclick="setTheme('t-fracture','this')">Fracture</button>
+  <button class="theme-btn" onclick="setTheme('t-channel','this')">Dead Channel</button>
+  <button class="theme-btn" onclick="setTheme('t-archive','this')">Archive</button>
+  <button class="theme-btn" onclick="setTheme('t-fever','this')">Fever</button>
+  <button class="theme-btn" onclick="setTheme('t-rave','this')">Rave Cave</button>
+  <div id="search-wrap">
+    <input id="search" type="text" placeholder="Search events, venues, genres…" oninput="filterEvents()">
+    <span id="count"></span>
+  </div>
+</div>
+
+<!-- DAY FILTER -->
+<div id="day-tabs">
+  <div class="day-tab active" onclick="filterDay('all',this)">All Days</div>
+  <div class="day-tab" onclick="filterDay('Thu',this)">Thu Mar 19</div>
+  <div class="day-tab" onclick="filterDay('Fri',this)">Fri Mar 20</div>
+  <div class="day-tab" onclick="filterDay('Sat',this)">Sat Mar 21</div>
+  <div class="day-tab" onclick="filterDay('Sun',this)">Sun Mar 22</div>
+  <div class="day-tab" onclick="filterDay('Mon',this)">Mon Mar 23</div>
+  <div class="day-tab" onclick="filterDay('Tue',this)">Tue Mar 24</div>
+</div>
+
+<header>
+  <div class="header-eyebrow">Southern California · Electronic Music Events</div>
+  <h1 class="header-title">March 19–24 · 2026</h1>
+  <p class="header-sub">154 events across Los Angeles, San Diego, Orange County & beyond</p>
+</header>
+
+<div id="main"></div>
+<div id="no-results">No events match your search.</div>
+
+<script>
+const EVENTS = [{"datetime":"Thu: Mar 19-Sun: Mar 22(Thu: 5pm-Sun: 12pm)","title_venue":"Jackson Tree 2026: The Glitch Mob, Ardalan, Chef Boyarbeatz, Porky, 96 Vibe, Alex Blanq, Andy Sotelo, Birdbaths, Candl, Cranial Superfood, Daisy P., Danas Dancing, Dylaninthedark, Fadi, Fancy Pants, Fantom Freq, Foolie, Friends Of Friends Of Friends, Frythm, Fubu Q, Han Choi, Handz, Hellafuct, Intamc, J Woogie, Jaksan, Jp, Julian Orozco, Kasto, Killer Pop, Kimothy Leary, Kleptoe, Liquid Giraffe, Low Poly, Lubby, Luhv, Luunii, Magda Halina, Marakkas, Mehlay, Mikey Made, Mogli, Nodsy, Ocean Roulette, Oglijacuzzi, Orah, Oyst, Pam Sessions, Party Robbins, Phil-Bert, Powerline, Rhiannon Roze, Seyaa, Silly Tina, Selekta Skoda, Solotrip, Sucio_Brucio, Taylor Pierce, Wet Velvet, Zntropy\u00a0@ Space Ranch (Kramer Junction)","tags":"tech house, dubstep, bass music","price_age":"$162 wknd pass | 21+","organizers":"","links":"Instagram Page"},{"datetime":"Thu: Mar 19(7pm)","title_venue":"Redveil\u00a0@ The Observatory Orange County (Santa Ana)","tags":"hip-hop","price_age":"$16+ | All ages","organizers":"","links":"Facebook Page"},{"datetime":"Thu: Mar 19(7pm-1am)","title_venue":"Substrate X Anemone\u00a0@ Psstudio (Los Angeles)","tags":"techno, dub techno","price_age":"$11.45-17.15 | 21+","organizers":"Corduroy Garden, Anemone","links":""},{"datetime":"Thu: Mar 19(7pm-9pm)","title_venue":"Headroom Listening Sessions: San Diego\u00a0@ Spin (San Diego)","tags":"producer workshop","price_age":"free | 21+","organizers":"Headroom Collective","links":"Facebook Page"},{"datetime":"Thu: Mar 19(9pm)","title_venue":"1tbsp, Soltera\u00a0@ Fonda Theatre (Los Angeles)","tags":"indie dance, house","price_age":"$43 | 18+","organizers":"Goldenvoice","links":""},{"datetime":"Thu: Mar 19(9pm)","title_venue":"49th & Main\u00a0@ El Rey Theatre (Los Angeles)","tags":"synthpop, house","price_age":"$35 | All ages","organizers":"Goldenvoice","links":""},{"datetime":"Thu: Mar 19(9pm)","title_venue":"College Night: Iv'iza Island\u00a0@ EOS Lounge (Santa Barbara)","tags":"house, hip-hop","price_age":"free | 21+","organizers":"","links":"Facebook Page"},{"datetime":"Thu: Mar 19(9pm)","title_venue":"Soundwaves\u00a0@ AC Lounge (San Diego)","tags":"multigenre EDM","price_age":"21","organizers":"EMX","links":""},{"datetime":"Thu: Mar 19(9pm-11pm)","title_venue":"Groove Room: A House and Hits Dance Party - drewwithdjglasses, Luke Darling\u00a0@ The Virgil (Los Angeles)","tags":"house","price_age":"free | 21+","organizers":"Cpr","links":""},{"datetime":"Thu: Mar 19(9pm-12am)","title_venue":"Walter, Vi5ion, Devin Jordan, Milluision\u00a0@ Banana Bay Restaurant (Rowland Heights)","tags":"dubstep, bass music","price_age":"free w/free w/rsvp | 21+","organizers":"The Illusion Night","links":""},{"datetime":"Thu: Mar 19(9pm-2am)","title_venue":"Armnhmr Presents Passport w/Bela Lex, Hanz\u00a0@ Exchange (Los Angeles)","tags":"pop EDM, big room house, trap, hip-hop","price_age":"free w/rsvp b4 11pm / $15 | 21+","organizers":"Space Yacht","links":"Facebook Page"},{"datetime":"Thu: Mar 19(9pm-2am)","title_venue":"Respect Dnb 27th Anniversary Feat. Monrroe, Sustance, Machete, Junglist Platoon, Chemistry MC\u00a0@ Jungle Hollywood (Los Angeles)","tags":"drum and bass, jungle","price_age":"$17.95-34.90 | 21+","organizers":"","links":""},{"datetime":"Thu: Mar 19(9pm-2am)","title_venue":"Rise: Trance Thursday\u00a0@ Spin Nightclub (San Diego)","tags":"uplifting trance, tech trance, hard trance","price_age":"$5 pre /$10 | 21+","organizers":"Trancension","links":""},{"datetime":"Thu: Mar 19(9pm-2am)","title_venue":"True House Thursday\u00a0@ The Circle OC (Huntington Beach)","tags":"house","price_age":"free w/rsvp / $7.18 | 21+","organizers":"True House La","links":""},{"datetime":"Thu: Mar 19(9pm-2am)","title_venue":"Vieze Asbak\u00a0@ 1720 (Los Angeles)","tags":"hardstyle, hard techno","price_age":"$17 pre / $20 b4 1030 / $28-34","organizers":"Trinity, Wasted","links":"Alternate Link"},{"datetime":"Thu: Mar 19(9:30pm-2am)","title_venue":"Veggi b2b Sunflwr, Nina Nevra B2B Vreden, Funkhousir\u00a0@ Kiss Kiss Bang Bang (Los Angeles)","tags":"house","price_age":"$22.66-34 | 21+","organizers":"Stereo Punks","links":"Alternate Link"},{"datetime":"Thu: Mar 19(10pm)","title_venue":"Blind Tiger\u00a0@ Sound Nightclub (Los Angeles)","tags":"tech house, minimal","price_age":"free w/rsvp b4 11pm / $11 | 21+","organizers":"","links":"Facebook Page"},{"datetime":"Thu: Mar 19(10pm-2am)","title_venue":"Electric Jungle\u00a0@ Yost Theater (Santa Ana)","tags":"house","price_age":"$17.99-39.99 | 21+","organizers":"Yost Theater Nightlife","links":""},{"datetime":"Thu: Mar 19(10pm-2am)","title_venue":"Elixir: Lily Ardalan, Gianni Blanco, Ian Zunich\u00a0@ The Monty Bar (Los Angeles)","tags":"tech house, g-house, bass house, deep house","price_age":"$7-13 | 21+","organizers":"","links":""},{"datetime":"Thu: Mar 19(10pm-2am)","title_venue":"Swagpuss Ep. 2: Girls Gone Wild: Kabooboo, Zayda, Seraphim, Brenna Jordan\u00a0@ The Wild Weho (Los Angeles)","tags":"indie sleaze, electro house, electropop, synthpop","price_age":"$6 pre / $10 | 21+","organizers":"Kabo","links":""},{"datetime":"Thu: Mar 19(11pm-5am)","title_venue":"Nightshift After Hours\u00a0@ TBA (DTLA/Los Angeles)","tags":"tech house, minimal","price_age":"free w/rsvp b5 1 / $28 | 21+","organizers":"Blind Tiger","links":"Alternate Link"},{"datetime":"Thu: Mar 19(11pm-5am)","title_venue":"Recollect: Dose, Miss Capri, Est Dani, Larsa, Aplex, Lavenge, Max Rush\u00a0@ TBA (DTLA/Los Angeles)","tags":"tech house, minimal, deep house","price_age":"$10 pre | 21+","organizers":"Love & Revenge Entertainment","links":"Alternate Link"},{"datetime":"Fri: Mar 20(4pm-10pm)","title_venue":"Sunset Sessions: Jtj's Birthday Celebration\u00a0@ Level 8 DTLA (Los Angeles)","tags":"house","price_age":"free w/rsvp | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(5pm)","title_venue":"Chris Lorenzo\u00a0@ Grand Park (Los Angeles)","tags":"tech house, bass house","price_age":"$106.15-162.56 | 21+","organizers":"Insomniac","links":""},{"datetime":"Fri: Mar 20(5pm)","title_venue":"Tape B w/ Daily Bread, Truth, Super Future + Cozy Kev\u00a0@ Gallagher Square (San Diego)","tags":"dubstep, bass music","price_age":"$55-75 | 18+","organizers":"Tape B","links":"Facebook Page"},{"datetime":"Fri: Mar 20(7pm)","title_venue":"Avalon Emerson & the Charm\u00a0@ Lodge Room (Los Angeles)","tags":"house, techno, disco","price_age":"$30 | All ages","organizers":"","links":""},{"datetime":"Fri: Mar 20(7pm)","title_venue":"Machine Girl\u00a0@ The Observatory (Santa Ana)","tags":"breakcore, drum and bass, jungle, acid bass","price_age":"$34-46 | All ages","organizers":"","links":""},{"datetime":"Fri: Mar 20(7pm-10pm)","title_venue":"Club Botanica: ANAHITA, Tropo\u00a0@ Earl Warren Showgrounds (Santa Barbara)","tags":"house, deep house","price_age":"$39-45 | 21+","organizers":"Sandala Experiences","links":""},{"datetime":"Fri: Mar 20(7pm-12am)","title_venue":"The Bass Face Space\u00a0@ The Roadies (Vista)","tags":"drum and bass, bass house, dubstep, bass music","price_age":"$12-23 | 18+","organizers":"PLUR Factory, SanDiego Ravers","links":""},{"datetime":"Fri: Mar 20(8pm)","title_venue":"Peaches\u00a0@ The Bellwether (Los Angeles)","tags":"electroclash, synthpop","price_age":"","organizers":"","links":""},{"datetime":"Fri: Mar 20(8pm)","title_venue":"Taiki Nulight\u00a0@ Roxy Theatre Hollywood (Los Angeles)","tags":"bass house","price_age":"$37 | 18+","organizers":"Goldenvoice, Brownies & Lemonade","links":""},{"datetime":"Fri: Mar 20(8pm)","title_venue":"Timecop1983, Dreamkid\u00a0@ Pacific Electric (Los Angeles)","tags":"dreamwave, synthpop, synthwave","price_age":"34.0","organizers":"","links":""},{"datetime":"Fri: Mar 20(8pm-1:30pm)","title_venue":"Mystic Grizzly w/ Entangled Mind\u00a0@ Tiki Bar (Costa Mesa)","tags":"dubstep, bass music, psybass, glitch-hop","price_age":"$23.18-33.85 | All ages","organizers":"Citrus Grove Collective, Wub","links":""},{"datetime":"Fri: Mar 20(8pm-12am)","title_venue":"Sippy\u00a0@ Ventura Music Hall Reserved (Ventura)","tags":"dubstep, bass music","price_age":"$33-57+ | All ages","organizers":"","links":""},{"datetime":"Fri: Mar 20(8pm-2am)","title_venue":"Kiku Room w/ Malachi\u00a0@ Kiku Room (San Diego)","tags":"house, disco","price_age":"$10 | 21+","organizers":"","links":"Instagram Page"},{"datetime":"Fri: Mar 20(9pm)","title_venue":"Alex Kade - San Diego Emo Rave\u00a0@ Spin (San Diego)","tags":"emo, pop punk, remixes, pop EDM","price_age":"$24 | 21+","organizers":"Wetouchgrass","links":"Facebook Page"},{"datetime":"Fri: Mar 20(9pm)","title_venue":"Cam Girl, Shankz\u00a0@ Bloom Nightclub (San Diego)","tags":"pop EDM","price_age":"$25 pre | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(9pm)","title_venue":"Shrek Rave\u00a0@ House Of Blues (San Diego)","tags":"multigenre EDM","price_age":"$27-68 | 18+","organizers":"","links":""},{"datetime":"Fri: Mar 20(9pm-1am)","title_venue":"Live Electronics w/ Ice Wall, Maude V\u00f4s, Adam O, Gmo, Znc\u00a0@ The Airliner (Los Angeles)","tags":"electronica, dub, ambient, tech house, techno","price_age":"21","organizers":"The Airliner","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Alix Perez + Hijinx\u00a0@ The Vermont (Hollywood/Los Angeles)","tags":"glitch-hop, bass music, dubstep, trap","price_age":"$37 pre","organizers":"System Error","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Barbareians Leather & Fetish Event: DJ Dustn\u00a0@ The Bullet Bar (North Hollywood/Los Angeles)","tags":"tech house","price_age":"$8 pre / $10 | 21+","organizers":"Hump Events","links":"Alternate Link"},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Breach Fridays\u00a0@ Maxximo New Age Banquet Hall (Pomona)","tags":"house, tech house, dubstep, bass music","price_age":"free w/rsvp / $23.18 | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Garrett David, Adam Rose, Julian Ortega\u00a0@ Eq (San Diego)","tags":"tech house, minimal","price_age":"$10 | 21+","organizers":"Rec Selects","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Hostile: Prosecute, Automhate, Executioner, Dekerakt\u00a0@ 1720 (Los Angeles)","tags":"dubstep, bass music","price_age":"$26.78 | 18+","organizers":"","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"House Music Fridays: Bret Wallace, Brian Sd, Jesse Austin\u00a0@ The Air Conditioned Lounge (San Diego)","tags":"deep house, funky house, tech house","price_age":"$5 | 21+","organizers":"Hmf","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"LA Teknika\u00a0@ Phantom (San Diego)","tags":"house, techno","price_age":"$17.15 | 18+","organizers":"House Y Techno","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Prosecute, Vyle, Stvg, Executioner\u00a0@ 1720 (Los Angeles)","tags":"dubstep, bass music","price_age":"$33+ | 18+","organizers":"Hostile","links":"Facebook Page"},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Share The Night - Jesse Sandwich & DJ Duckcomb\u00a0@ Apotheke (Los Angeles)","tags":"disco, boogie, deep house","price_age":"free | 21+","organizers":"Caliclipper","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Sounds Gritty: Bass Function\u00a0@ Breakpoint Pb (San Diego)","tags":"dubstep, bass music","price_age":"$10 pre | 21+","organizers":"Sounds Good Collective","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Super Sonic Saturdays\u00a0@ The Air Conditioned Lounge (San Diego)","tags":"hip-hop, trap, beats","price_age":"$5 | 21+","organizers":"Cowbellchris","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"The Green Room: Dr Apollo, Onika, Supremacy, Prophanity, Viceversa, Thx2zu, Skim, Open Aux\u00a0@ Melrose House (Los Angeles)","tags":"dubstep, bass music, drum and bass, trap, hip-hop, r&b","price_age":"$20-25 | 21+","organizers":"Diy Raves, Ground Zero","links":""},{"datetime":"Fri: Mar 20(9pm-2am)","title_venue":"Una Noche De Perreo: Dina, Joaqu.n\u00a0@ Apartment 503 (Los Angeles)","tags":"reggaeton, cumbia, dembow","price_age":"$15 pre | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(9pm-3am)","title_venue":"Acemo & Photay / All Night\u00a0@ Psstudio (Los Angeles)","tags":"house, techno, club music","price_age":"$17.15-28.55 | 21+","organizers":"Corduroy Garden, Extravagant Frequencies","links":""},{"datetime":"Fri: Mar 20(9pm-3am)","title_venue":"Carl Craig, Kyle Hall, JMT\u00a0@ 6th St Bridge (Los Angeles)","tags":"techno, house","price_age":"$22 b4 10 / $38-49 | 21+","organizers":"In Between X Detroit Love","links":""},{"datetime":"Fri: Mar 20(9pm-3am)","title_venue":"Vieze Asbak\u00a0@ 9Thirty (Los Angeles)","tags":"hardstyle, hard techno","price_age":"$41 b4 1030 / $47+","organizers":"Trinity, Wasted","links":"Alternate Link"},{"datetime":"Fri: Mar 20(9pm-5am)","title_venue":"Split Frequencies w/Izzyvadim & VCTRE (Unofficial Tape B Afters)\u00a0@ TBA (San Diego)","tags":"dubstep, bass music, trap","price_age":"$15-30 | 21+","organizers":"Psychosis Events x Project Seismic","links":""},{"datetime":"Fri: Mar 20(9:30pm-4am)","title_venue":"A Club Called Heatstroke: Fifi, Goddollars, Honey, Nino Brown, Paradise, Sophie Gray, Them Jeans, Tinashe (DJ), Zack Fox\u00a0@ Los Globos (Los Angeles)","tags":"house, disco, tech house","price_age":"$11.45-40 | 21+","organizers":"Rhonda & Fifi","links":""},{"datetime":"Fri: Mar 20(10pm)","title_venue":"ATLiens\u00a0@ Time Nightclub (Costa Mesa)","tags":"trap, bass music","price_age":"$35 pre | 21+","organizers":"","links":"Facebook Page"},{"datetime":"Fri: Mar 20(10pm)","title_venue":"Electric Ave: Ompire x KANO, Vista Joi x Kamu, GENIE x Tres, DJ BiFu x DJ Jala, Dapigge x Zeerow\u00a0@ Los Globos (Los Angeles)","tags":"tech house, EDM","price_age":"21","organizers":"EMX","links":""},{"datetime":"Fri: Mar 20(10pm)","title_venue":"Grave Rave\u00a0@ Exchange (Los Angeles)","tags":"goth, emo, EDM","price_age":"free w/rsvp b4 11pm / $15-20 | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(10pm)","title_venue":"K?D w/ 1788-L\u00a0@ Academy (Los Angeles)","tags":"future bass, midtempo bass, house","price_age":"$20 | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(10pm-1:30am)","title_venue":"1tbsp\u00a0@ Music Box (San Diego)","tags":"indie dance, house","price_age":"$20-25 | 21+","organizers":"FNGRS CRSSD","links":"Facebook Page"},{"datetime":"Fri: Mar 20(10pm-1:30am)","title_venue":"Dub at Dirty: Angelsmilk, Nick Joy, Chi.Bro, Ghedi\u00a0@ Dirty Laundry Bar (Los Angeles)","tags":"dubstep, bass music","price_age":"free w/rsvp | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(10pm-1:30am)","title_venue":"What So Not\u00a0@ Bloom Nightclub (San Diego)","tags":"trap, dubstep","price_age":"$23 pre | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(10pm-2am)","title_venue":"Club Blush: An Ethereal & Euphoric Dance Night\u00a0@ El Cid (Los Angeles)","tags":"house, synthpop, downtempo, progressive house","price_age":"$7.50 pre | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(10pm-2am)","title_venue":"Darren Styles\u00a0@ Avalon Hollywood (Los Angeles)","tags":"uk hardcore","price_age":"$35 pre | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(10pm-2am)","title_venue":"Microdazing: Reggie Watts, Maylee Todd, Capyac, Cissi Tv\u00a0@ The Bellwether (Los Angeles)","tags":"funky house, nu-disco","price_age":"$8-14 | 21+","organizers":"Desert Daze","links":"Alternate Link"},{"datetime":"Fri: Mar 20(10pm-2am)","title_venue":"Phantogram\u00a0@ Nova Sd (San Diego)","tags":"synthpop","price_age":"$35 pre | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(10pm-2am)","title_venue":"Sebastiane\u00a0@ Akbar (Los Angeles)","tags":"house, electro, italo disco","price_age":"$5 | 21+","organizers":"Sindri","links":""},{"datetime":"Fri: Mar 20(10pm-2am)","title_venue":"Shake It Release Party: Memphy, Joanna Kuchta, Bella Ferrada, Lulu Belle\u00a0@ Honey's At Star Love (Los Angeles)","tags":"club, house, techno","price_age":"free | 21+","organizers":"Saint One Records","links":""},{"datetime":"Fri: Mar 20(10pm-2am)","title_venue":"SHAKING, BIATA b2b Delamare, Sabbia, Connor Daly\u00a0@ Homage Brewing (Los Angeles)","tags":"uk garage, house","price_age":"$11.45 | 21+","organizers":"Enc0re","links":"Alternate Link"},{"datetime":"Fri: Mar 20(10pm-2am)","title_venue":"Vernal Inferno: The Spring Equinox Party\u00a0@ Catch One (Los Angeles)","tags":"house, breaks, uk garage, disco","price_age":"$7-20 | 21+","organizers":"Cultist Events","links":"Alternate Link"},{"datetime":"Fri: Mar 20(10pm-2am)","title_venue":"We Are Your Friends: Indie Sleaze Night\u00a0@ Boardner's By LA Belle (Los Angeles)","tags":"indie dance, synthpop, electro house","price_age":"$17.92-23.23 | 18+","organizers":"Club Decades","links":""},{"datetime":"Fri: Mar 20(10pm-3am)","title_venue":"Obskur\u00a0@ Sound Nightclub (Los Angeles)","tags":"tech house","price_age":"$37.39 | 21+","organizers":"","links":"Facebook Page"},{"datetime":"Fri: Mar 20(10pm-3am)","title_venue":"Raffa Guido\u00a0@ The Spotlight (Los Angeles)","tags":"afro house, latin house","price_age":"$23 pre | 21+","organizers":"","links":""},{"datetime":"Fri: Mar 20(10pm-5am)","title_venue":"2D0gs, Dilemmah\u00a0@ TBA (Los Angeles)","tags":"house","price_age":"$17.15 b4 11 / $23-34.30 | 21+","organizers":"Minty Boi, Into The Woods, Wanna Dance?","links":""},{"datetime":"Fri: Mar 20(11pm)","title_venue":"Cellblock: Chamoy Baby, Static, Inner Demonz, Rezly, Avelle, Abimael\u00a0@ TBA (DTLA/Los Angeles)","tags":"hard techno","price_age":"$7.45-20","organizers":"","links":""},{"datetime":"Fri: Mar 20(11pm-4am)","title_venue":"Groovers Inn: Eddy Lavin, Hedge, Chechin, $erg, Chris Pablo\u00a0@ TBA (Inland Empire)","tags":"house","price_age":"$11 pre | 18+","organizers":"Inland Groove","links":""},{"datetime":"Fri: Mar 20(11pm-5am)","title_venue":"Danilo Plessow (MCDE), Darone Sassounian, Tottie\u00a0@ TBA (DTLA/Los Angeles)","tags":"house, deep house","price_age":"$28.55-34.30 | 21+","organizers":"Lights Down Low","links":""},{"datetime":"Fri: Mar 20(11pm-5am)","title_venue":"Estiva, Farius, Hiwater, Tektrix\u00a0@ TBA Warehouse (Los Angeles)","tags":"progressive house, trance","price_age":"$20 b4 12 / $25-40 | 21+","organizers":"Incognito","links":""},{"datetime":"Fri: Mar 20(11pm-5am)","title_venue":"Nightshift After Hours\u00a0@ TBA (DTLA/Los Angeles)","tags":"tech house, minimal","price_age":"free w/rsvp b5 1 / $28 | 21+","organizers":"Blind Tiger","links":"Alternate Link"},{"datetime":"Fri: Mar 20(11pm-5am)","title_venue":"Pegasus Spring Equinox: Trax Unit, Flabbergast, Mary MChenry, Rynn Ringo\u00a0@ TBA (DTLA/Los Angeles)","tags":"house, electro, techno, club","price_age":"$21-42","organizers":"","links":""},{"datetime":"Fri: Mar 20(11pm-5am)","title_venue":"Thermal: Crrdr (Latincore Takeover) w/Dina, Rios, DJ T3kno, and Pretty Ricky\u00a0@ TBA (DTLA/Los Angeles)","tags":"dembow, baile funk, reggaeton, guaracha, club","price_age":"$5.50-44.45 | 21+","organizers":"Closer","links":""},{"datetime":"Sat: Mar 21(9am-1pm)","title_venue":"Cars & Brekkie: House Music Morning: Jess, J Nikole, TBSwagg, Coco Parker\u00a0@ Haven City Market (West Covina)","tags":"house","price_age":"","organizers":"Soundcheck OC, Plugplay","links":"Instagram Page"},{"datetime":"Sat: Mar 21(12pm)","title_venue":"K-Pop Demon Ravers Kids Rave\u00a0@ The Glass House (Pomona)","tags":"pop EDM","price_age":"$24 pre | All ages","organizers":"Kawaii Rave","links":"Facebook Page"},{"datetime":"Sat: Mar 21(2pm-4pm)","title_venue":"Circuit Line: Route 02 - Alrt\u00a0@ Big Bus Tours (Los Angeles)","tags":"tech house, bass house","price_age":"$34 pre | All ages","organizers":"Social Studies","links":""},{"datetime":"Sat: Mar 21(2pm-8pm)","title_venue":"The Groove\u00a0@ The Waterfront Venice (Venice/Los Angeles)","tags":"house","price_age":"free w/rsvp | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(2pm-8pm)","title_venue":"The Mustache Bash\u00a0@ Mission Beach (San Diego)","tags":"house, disco, funky house","price_age":"$169 / $20 pre party / $45 after | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(3pm-9pm)","title_venue":"Beats By The Bay: Danny Grisa, Megalina, Bacon216, Memo Rex\u00a0@ TBA (San Diego)","tags":"tech house, afro house, progressive house, deep house","price_age":"free","organizers":"Resonant Underground","links":""},{"datetime":"Sat: Mar 21(4pm-9pm)","title_venue":"The Observation Tour: Supertask = Atyya = Mystic State b2b Enigma Dubz\u00a0@ Quartyard (San Diego)","tags":"dubstep, bass music, downtempo, psydub","price_age":"$34.96 | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(4pm-9pm)","title_venue":"Tortured Soul, Colette and DJ Dazy\u00a0@ Jungle Hollywood (Los Angeles)","tags":"house","price_age":"$28-40 | 21+","organizers":"Candy Talk Records","links":"Alternate Link"},{"datetime":"Sat: Mar 21(5pm)","title_venue":"Chris Lorenzo\u00a0@ Grand Park (Los Angeles)","tags":"tech house, bass house","price_age":"$106.15-162.56 | 21+","organizers":"Insomniac","links":""},{"datetime":"Sat: Mar 21(5pm-3am)","title_venue":"Csw Open Air - Kia, Reptant (Live), X3butterfly b2b Succubass, Sysk\u00a0@ TBA (DTLA/Los Angeles)","tags":"house, breaks, club","price_age":"$27.55-49.55 | 21+","organizers":"Canary Sound Werk","links":""},{"datetime":"Sat: Mar 21(6pm-8pm)","title_venue":"Carlos Nino & Friends: +Bubble Bath For Giants+ Album Release Celebration\u00a0@ Topanga Community Center (Los Angeles)","tags":"experimental","price_age":"$25-66","organizers":"","links":""},{"datetime":"Sat: Mar 21(7pm-11pm)","title_venue":"Higher Grooves Rooftop Party\u00a0@ The Broken Shaker (Los Angeles)","tags":"house","price_age":"free | 21+","organizers":"Made To Move","links":"Instagram Page"},{"datetime":"Sat: Mar 21(8pm)","title_venue":"Peaches\u00a0@ The Bellwether (Los Angeles)","tags":"electroclash, synthpop","price_age":"","organizers":"","links":""},{"datetime":"Sat: Mar 21(8pm)","title_venue":"Taiki Nulight, Copycatt\u00a0@ Roxy Theatre Hollywood (Los Angeles)","tags":"bass house","price_age":"$32-37 | 18+","organizers":"Goldenvoice, Brownies & Lemonade","links":""},{"datetime":"Sat: Mar 21(8pm-2am)","title_venue":"Tesla Rooftop On 3Rd St Promenade: Benson, Andrea Calabria, Mer Bear, La Calisienne, Waxthieves, Sommer\u00a0@ Tesla Rooftop @ 3rd St Promenade Santa Monica (Los Angeles)","tags":"house, tech house","price_age":"$28.55 | 21+","organizers":"Beat Repeat","links":""},{"datetime":"Sat: Mar 21(8pm-4am)","title_venue":"We Are Not Angels LA II: DJ Hemp Rose, Jay Ani, Void Vision, C.R.Y.B.O.R.G\u00a0@ Studio Eleven43 (Los Angeles)","tags":"acid techno, new beat, minimal synth, ghettotech, footwork, pop, disco","price_age":"18","organizers":"","links":"Instagram Page"},{"datetime":"Sat: Mar 21(9pm)","title_venue":"Og Nixin\u00a0@ The Circle OC (Huntington Beach)","tags":"dubstep","price_age":"$18.50-29.12 | 18+","organizers":"Wasted","links":""},{"datetime":"Sat: Mar 21(9pm-1am)","title_venue":"Snakehips\u00a0@ EOS Lounge (Santa Barbara)","tags":"funky house, tech house","price_age":"$24.72 | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(9pm-2am)","title_venue":"B.Low Feat. Leo Marmentini & Enzo Muro\u00a0@ Bar Franca (Los Angeles)","tags":"techno, tech house, funky house","price_age":"free w/rsvp","organizers":"You Know What","links":""},{"datetime":"Sat: Mar 21(9pm-2am)","title_venue":"Boba Sky Presents Road To Beyond\u00a0@ TBA Warehouse (Baldwin Park)","tags":"open decks, dubstep, melodic dubstep","price_age":"free w/rsvp b4 11pm / $5-20 | 21+","organizers":"Afterlife Ent, Boba Sky","links":""},{"datetime":"Sat: Mar 21(9pm-2am)","title_venue":"Bored Lord w/ Honeydu, Kale, Swe47er b2b Xochi\u00a0@ Eq (San Diego)","tags":"house, deep house, breaks, uk garage","price_age":"$17-23 | 21+","organizers":"Bootydew X Soft Shoulder","links":""},{"datetime":"Sat: Mar 21(9pm-2am)","title_venue":"Chica Club\u00a0@ Pattern Bar (Los Angeles)","tags":"house, latin EDM, electronica, world beats","price_age":"$10 | 21+","organizers":"Elektra Lite","links":""},{"datetime":"Sat: Mar 21(9pm-2am)","title_venue":"Eargasm God, Neon Graveyard, & Per Pleks\u00a0@ 9Thirty (Los Angeles)","tags":"house, trance, hard techno, psytrance","price_age":"$23 pre","organizers":"Trinity","links":""},{"datetime":"Sat: Mar 21(9pm-2am)","title_venue":"Loud Gaze w/ Stacy Christine, Annika Wolfe and Filoso\u00a0@ 1060 Garnet Ave (San Diego)","tags":"tech house, deep house, techno","price_age":"free w/rsvp b4 10:30pm / $12-23 | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(9pm-2am)","title_venue":"Unzip Long Beach.The Fanny Pack Party - DJ Jae Fusz\u00a0@ Men's Room Bar (Long Beach)","tags":"tech house, circuit house","price_age":"$18 pre | 21+","organizers":"Hump Events","links":""},{"datetime":"Sat: Mar 21(9pm-3am)","title_venue":"A-Trak & Friends\u00a0@ Lot 613 (Los Angeles)","tags":"trap, hip-hop, house, pop EDM","price_age":"$29.48-94.32 | 21+","organizers":"Origin","links":""},{"datetime":"Sat: Mar 21(9pm-4am)","title_venue":"Chop City\u00a0@ TBA (DTLA/Los Angeles)","tags":"dubstep, bass music, riddim","price_age":"$27 pre | 21+","organizers":"Wubconscious Entertainment","links":""},{"datetime":"Sat: Mar 21(9pm-4am)","title_venue":"Daisy Chain #27 w/ Alix Perez\u00a0@ Spin Nightclub (San Diego)","tags":"glitch-hop, bass music, dubstep, trap","price_age":"$20-25 | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(9:30pm)","title_venue":"Arlo: Take Me Away Tour\u00a0@ The Moroccan Lounge (Los Angeles)","tags":"house, uk garage, EDM","price_age":"$39 | 18+","organizers":"","links":""},{"datetime":"Sat: Mar 21(9:30pm)","title_venue":"Dopamine: A Feel Good House & Disco Party\u00a0@ El Cid (Los Angeles)","tags":"house, disco","price_age":"free w/rsvp b4 10pm / $14 | 21+","organizers":"","links":"Facebook Page"},{"datetime":"Sat: Mar 21(10pm-1:30am)","title_venue":"DJ Soda\u00a0@ Time Nightclub (Costa Mesa)","tags":"kpop, pop EDM","price_age":"$23 pre | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(10pm-1:30am)","title_venue":"Yetep\u00a0@ Bloom Nightclub (San Diego)","tags":"melodic dubstep, future bass, EDM","price_age":"$12 pre | 21+","organizers":"Lost In Dreams","links":""},{"datetime":"Sat: Mar 21(10pm-1:45am)","title_venue":"A Lesson In Movement Hosted by Adrian Escobar & Gianni Blanco\u00a0@ Townhouse Venice (Los Angeles)","tags":"house","price_age":"$12.36 | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(10pm-2am)","title_venue":"A Boy Named Barbara\u00a0@ The Virgil (Los Angeles)","tags":"tech house","price_age":"free | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(10pm-2am)","title_venue":"At Your Wurst w/ Edd\u00a0@ Wurstkuche Venice (Los Angeles)","tags":"disco, deep house, tech house","price_age":"$20+ | 21+","organizers":"ClubView Records","links":"Instagram Page"},{"datetime":"Sat: Mar 21(10pm-2am)","title_venue":"Ben Nicky\u00a0@ Nova Sd (San Diego)","tags":"trance, hardstyle","price_age":"$17 pre | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(10pm-2am)","title_venue":"Club Pivete: Mia Carucci, Victoria Moura, Izella\u00a0@ TBA Hollywood (Los Angeles)","tags":"baile funk, latin club","price_age":"$13.50-18.85 | 21+","organizers":"Victoria Moura","links":"Instagram Page"},{"datetime":"Sat: Mar 21(10pm-2am)","title_venue":"Paradisco\u00a0@ Kiss Kiss Bang Bang (Los Angeles)","tags":"house, disco","price_age":"free w/rsvp | 21+","organizers":"Stereo Punks","links":"Alternate Link"},{"datetime":"Sat: Mar 21(10pm-2am)","title_venue":"Paul van Dyk\u00a0@ Avalon Hollywood (Los Angeles)","tags":"trance, progressive house","price_age":"$40 pre | 21+","organizers":"Dreamstate","links":""},{"datetime":"Sat: Mar 21(10pm-2am)","title_venue":"Sebastien Leger\u00a0@ Members (Los Angeles)","tags":"french house, tech house, techno","price_age":"21","organizers":"","links":"Alternate Link"},{"datetime":"Sat: Mar 21(10pm-2am)","title_venue":"Yeah Yeah Yas\u00a0@ The Bellwether (Los Angeles)","tags":"electroclash, electro house, indie dance","price_age":"$14.45 | 21+","organizers":"Another Planet, Teragram","links":""},{"datetime":"Sat: Mar 21(10pm-3:30am)","title_venue":"Chromenights: Sage Armstrong, JP, Loomi, Red Flag\u00a0@ District 7 (Los Angeles)","tags":"house, tech house","price_age":"free w/rsvp b4 midnight / $10","organizers":"Chrome Nights La","links":""},{"datetime":"Sat: Mar 21(10pm-3am)","title_venue":"Clara Cuve 360\u00a0@ Exchange (Los Angeles)","tags":"hard techno","price_age":"$20 | 21+","organizers":"Insomniac, Mutate","links":""},{"datetime":"Sat: Mar 21(10pm-3am)","title_venue":"Linska\u00a0@ Sound Nightclub (Los Angeles)","tags":"tech house, techno","price_age":"$38.32 | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(10pm-3am)","title_venue":"Maurice: TSG, Nic Jericho, TwiN\u00a0@ Los Globos (Los Angeles)","tags":"hi-nrg, disco","price_age":"$20 pre / $25 | 21+","organizers":"Major Winters","links":"Instagram Page"},{"datetime":"Sat: Mar 21(10pm-3am)","title_venue":"Nightmares On Wax\u00a0@ The Spotlight (Los Angeles)","tags":"trip-hop, downtempo","price_age":"$29 | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(10pm-4am)","title_venue":"Fuel w/ Myxzlplix, K-Swift\u00a0@ Rich's (San Diego)","tags":"tech house, hip-hop","price_age":"$18 | 21+","organizers":"","links":"Facebook Page"},{"datetime":"Sat: Mar 21(10pm-6am)","title_venue":"Marmalade Jams X Melt: E.Lina, Melody, Brett Johnson & Mungo Sound Machine\u00a0@ TBA (DTLA/Los Angeles)","tags":"deep house, tech house","price_age":"$15-50 | 21+","organizers":"Melt Collective","links":""},{"datetime":"Sat: Mar 21(11pm-5am)","title_venue":"Axis: Hive - A Spring Pollination, w/ Jack Faulkner & Jonny Cota\u00a0@ TBA (Los Angeles)","tags":"afro house, deep house","price_age":"$45 pre | 21+","organizers":"Adam Ramzi, Jack Faulkner","links":""},{"datetime":"Sat: Mar 21(11pm-5am)","title_venue":"Basscity: Blvck Jesus Apsara, Bass Kitty, Elysium, Bludbend, Dusk to Dawn, Juice, Sylknet\u00a0@ TBA (Los Angeles)","tags":"dubstep, bass music, drum and bass, open decks","price_age":"$10 pre | 21+","organizers":"Love&Revenge Entertainement, Juptr, Helipad Society","links":"Alternate Link"},{"datetime":"Sat: Mar 21(11pm-5am)","title_venue":"Direct Drive 3-Year Anniversary - Conducta b2b Leonce\u00a0@ TBA (DTLA/Los Angeles)","tags":"uk garage, r&b, hip-hop, trap","price_age":"$22.50-37.50 | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(11pm-5am)","title_venue":"Good Game\u00a0@ Moneycat (Los Angeles)","tags":"reggaeton, juke, ghettotech, club","price_age":"$11-23 | 21+","organizers":"Good Game Productions","links":"Instagram Page"},{"datetime":"Sat: Mar 21(11pm-5am)","title_venue":"Nightshift After Hours\u00a0@ TBA (DTLA/Los Angeles)","tags":"tech house, minimal","price_age":"free w/rsvp b5 1 / $28 | 21+","organizers":"Blind Tiger","links":"Alternate Link"},{"datetime":"Sat: Mar 21(11pm-5am)","title_venue":"Swxch 003: Fka.M4A, Masha Mar, and Linda Lo\u00a0@ TBA (Los Angeles)","tags":"hard house, techno, italo disco","price_age":"$20 b4 12 / $25-40 | 21+","organizers":"SWXCH Community","links":"Facebook Page"},{"datetime":"Sat: Mar 21(11pm-6am)","title_venue":"Vice Underground / The Cage 360 Dancefloor KNOXDOTMP3, Perfect Lovers, Heidi Lawden, Justin Cudmore , Flabbergast, Josh Peace\u00a0@ TBA (Los Angeles)","tags":"house, trance, baile funk, techno","price_age":"$28 b4 11 / $51-60 | 21+","organizers":"","links":""},{"datetime":"Sat: Mar 21(11:59pm-6am)","title_venue":"Midnight Lovers w/ Demi Riquisimo, Make A Dance, Club Tularosa\u00a0@ TBA (DTLA/Los Angeles)","tags":"house, electro","price_age":"$28.55-45.70 | 21+","organizers":"","links":"Instagram Page"},{"datetime":"Sun: Mar 22(12pm)","title_venue":"The Re:Love Park Series: Mark E. Quark, Bret Wallace, Tony Gamboa, Birdlady, Matty B\u00a0@ Woodley Park (Van Nuys/Los Angeles)","tags":"house, deep house, disco","price_age":"free | All ages","organizers":"","links":""},{"datetime":"Sun: Mar 22(1pm-6pm)","title_venue":"Matcha and Groove 002\u00a0@ Doubletree DTLA - Kyoto Garden (Los Angeles)","tags":"baile funk, house, latin club, uk garage, breaks, hip-hop","price_age":"$16.80-27.95 | 18+","organizers":"Goyo Club","links":""},{"datetime":"Sun: Mar 22(3pm-8pm)","title_venue":"Fireworks On Air Ft Castillo + D4bblz + Megalina\u00a0@ Quartyard (San Diego)","tags":"house","price_age":"21","organizers":"","links":""},{"datetime":"Sun: Mar 22(4pm-10pm)","title_venue":"Subtract On The Pier | Sebastien Leger\u00a0@ Belmont Veterans Memorial Pier (Long Beach/Los Angeles)","tags":"french house, tech house, techno","price_age":"$45.32 | 21+","organizers":"Subtract","links":"Alternate Link"},{"datetime":"Sun: Mar 22(4pm-10pm)","title_venue":"Sunset Sessions 'Centered Hawaii Takeover': Miko Franconi, Saand, Kmni, Cinergy, Little Dinosaur\u00a0@ Level 8 DTLA (Los Angeles)","tags":"house, tech house","price_age":"free w/rsvp | 21+","organizers":"","links":""},{"datetime":"Sun: Mar 22(4pm-12am)","title_venue":"Rooftop Ritual\u00a0@ Somewhere Special (Los Angeles)","tags":"latin house, tech house","price_age":"free w/rsvp","organizers":"Quantum Groove, Animal Style Events, Polar Nights, Vertigo Studios","links":""},{"datetime":"Sun: Mar 22(4pm-9pm)","title_venue":"Sunlight Social w/ Moontalk - Arisa\u00a0@ Spin Nightclub (San Diego)","tags":"house","price_age":"$18.80 b4 6 / $27.65 | 21+","organizers":"Wonder Gate Llc","links":"Alternate Link"},{"datetime":"Sun: Mar 22(6pm-12am)","title_venue":"Sunday Sessions LA (Vinyl Only)\u00a0@ The Bridge (Oakland)","tags":"tech house, deep house, minimal","price_age":"free b4 7pm / $22.85-34.30 | 21+","organizers":"Sunday Sessions (Vinyl Only)","links":"Alternate Link"},{"datetime":"Sun: Mar 22(7pm)","title_venue":"Hypnagogue, doom soomi, Nick McClurg\u00a0@ Coaxial (Los Angeles)","tags":"live looping, experimental, ambient","price_age":"12.0","organizers":"","links":""},{"datetime":"Sun: Mar 22(7pm-11:30pm)","title_venue":"Electronic Music: Moosetone, Queen of the Tadpoles, Fonetikleespelt, Mocha Jay, Humongous Frog, Wild Wild Mike, Earth 626\u00a0@ Old Towne Pub (Pasadena/Los Angeles)","tags":"ambient, experimental, deep house, techno","price_age":"$5 | 21+","organizers":"LA Synth Club","links":"Instagram Page"},{"datetime":"Sun: Mar 22(8pm-11pm)","title_venue":"And Now This Creature\u00a0@ Oracle Egg (Los Angeles)","tags":"ambient, drone","price_age":"","organizers":"No Escape Except Peace","links":"Instagram Page"},{"datetime":"Sun: Mar 22(10pm-2am)","title_venue":"Tropical White Party\u00a0@ High Tide (Los Angeles)","tags":"house, dubstep, bass music","price_age":"$17 pre / $20 | 21+","organizers":"The Illusion Night","links":""},{"datetime":"Sun: Mar 22(11pm-5am)","title_venue":"Nightshift After Hours\u00a0@ TBA (DTLA/Los Angeles)","tags":"tech house, minimal","price_age":"free w/rsvp b5 1 / $28 | 21+","organizers":"Blind Tiger","links":"Alternate Link"},{"datetime":"Mon: Mar 23(8pm)","title_venue":"Peaches\u00a0@ The Sound Del Mar (Playa del Mar)","tags":"electroclash, synthpop","price_age":"","organizers":"","links":""},{"datetime":"Tue: Mar 24(8pm)","title_venue":"Sanctuary\u00a0@ Eq (San Diego)","tags":"drum and bass, jungle","price_age":"","organizers":"San Dnb","links":""}];
+
+const DAYS = {
+  'Thu': 'Thursday, March 19',
+  'Fri': 'Friday, March 20',
+  'Sat': 'Saturday, March 21',
+  'Sun': 'Sunday, March 22',
+  'Mon': 'Monday, March 23',
+  'Tue': 'Tuesday, March 24'
+};
+
+let currentTheme = 't-fracture';
+let currentDay = 'all';
+let currentSearch = '';
+
+function setTheme(t) {
+  document.body.className = t;
+  currentTheme = t;
+  document.querySelectorAll('.theme-btn').forEach((btn, i) => {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
+}
+
+function filterDay(day, el) {
+  currentDay = day;
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderEvents();
+}
+
+function filterEvents() {
+  currentSearch = document.getElementById('search').value.toLowerCase();
+  renderEvents();
+}
+
+function parseEvent(ev) {
+  // Split title @ venue
+  const atSplit = ev.title_venue.replace(/\u00a0/g, ' ').split('@ ');
+  const title = atSplit[0].trim();
+  const venue = atSplit.slice(1).join('@ ').trim();
+  // parse price | age
+  const pa = ev.price_age.split('|');
+  const price = pa[0] ? pa[0].trim() : '';
+  const age = pa[1] ? pa[1].trim() : '';
+  return { ...ev, title, venue, price, age };
+}
+
+function getDayKey(dt) {
+  const m = dt.match(/^(Thu|Fri|Sat|Sun|Mon|Tue)/);
+  return m ? m[1] : '?';
+}
+
+function renderEvents() {
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  let filtered = EVENTS.map((ev, i) => ({ ...parseEvent(ev), idx: i }));
+
+  // Day filter
+  if (currentDay !== 'all') {
+    filtered = filtered.filter(ev => getDayKey(ev.datetime) === currentDay);
+  }
+
+  // Search filter
+  if (currentSearch) {
+    filtered = filtered.filter(ev => {
+      return (ev.title + ev.venue + ev.tags + ev.organizers + ev.datetime).toLowerCase().includes(currentSearch);
+    });
+  }
+
+  const noRes = document.getElementById('no-results');
+  document.getElementById('count').textContent = filtered.length + ' events';
+
+  if (filtered.length === 0) {
+    noRes.style.display = 'block';
+    return;
+  }
+  noRes.style.display = 'none';
+
+  // Group by day
+  const groups = {};
+  filtered.forEach(ev => {
+    const dk = getDayKey(ev.datetime);
+    if (!groups[dk]) groups[dk] = [];
+    groups[dk].push(ev);
+  });
+
+  const dayOrder = ['Thu','Fri','Sat','Sun','Mon','Tue'];
+  dayOrder.forEach(dk => {
+    if (!groups[dk]) return;
+    const section = document.createElement('div');
+    section.className = 'day-group';
+    section.innerHTML = `<div class="day-heading">${DAYS[dk] || dk} &mdash; ${groups[dk].length} events</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'events-grid';
+
+    groups[dk].forEach(ev => {
+      const card = document.createElement('div');
+      card.className = 'event-card';
+      card.setAttribute('data-idx', String(ev.idx + 1).padStart(3,'0'));
+
+      // parse time from datetime
+      const timeMatch = ev.datetime.match(/\(([^)]+)\)/);
+      const time = timeMatch ? timeMatch[1] : ev.datetime;
+
+      // tags
+      const tagsHtml = ev.tags ? ev.tags.split(',').map(t => `<span class="tag">${t.trim()}</span>`).join('') : '';
+
+      // link text
+      const linkHtml = ev.links ? `<span class="event-link">${ev.links}</span>` : '';
+
+      // pulse dot for rave theme
+      const pulseDot = currentTheme === 't-rave' ? '<span class="pulse-dot"></span>' : '';
+
+      card.innerHTML = `
+        <div class="event-time">${time}</div>
+        <div class="event-title">${pulseDot}${ev.title}</div>
+        <div class="event-venue">${ev.venue}</div>
+        ${tagsHtml ? `<div class="event-tags">${tagsHtml}</div>` : ''}
+        <div class="event-meta">
+          <span class="event-price">${ev.price || ev.age ? [ev.price, ev.age].filter(Boolean).join(' · ') : ''}</span>
+          <span style="display:flex;gap:8px;align-items:center;">
+            ${ev.organizers ? `<span class="event-org">${ev.organizers}</span>` : ''}
+            ${linkHtml}
+          </span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    main.appendChild(section);
+  });
+}
+
+// Init
+renderEvents();
+document.getElementById('count').textContent = EVENTS.length + ' events';
+</script>
+</body>
+</html>
